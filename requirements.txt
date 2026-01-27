@@ -1,0 +1,27 @@
+# Requirements pour le projet de détection d'incidents NLP
+# Note: Ce projet est une vitrine/portfolio, non exécutable directement
+
+# Core ML/NLP
+torch>=1.13.0
+transformers>=4.21.0
+datasets>=2.0.0
+sentencepiece>=0.1.96
+
+# Data processing
+pandas>=1.5.0
+numpy>=1.23.0
+
+# Evaluation & Metrics
+scikit-learn>=1.1.0
+evaluate>=0.4.0
+
+# Visualization
+matplotlib>=3.6.0
+seaborn>=0.12.0
+
+# Jupyter
+jupyter>=1.0.0
+ipykernel>=6.15.0
+
+# MongoDB (pour extraction des données - non utilisé dans ce repo)
+# pymongo>=4.3.0
