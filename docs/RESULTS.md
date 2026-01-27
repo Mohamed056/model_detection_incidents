@@ -192,8 +192,8 @@ With the custom threshold, only one false negative was identified:
 Index: 383
 Incident Proba: 0.316
 Text: "ac: bonjour j'ai un souci le vsl sui devait venir est tolbe rn panne sur a86 je ne pourrai effectuer le transport cordialement paramedic: Nous Recommandons un transport ac: merci"
-Trip Type: PIA externe (SSR vers MCO)
-Time Type: Prise en charge
+Trip Type: External transfer (example)
+Time Type: Pickup
 Weekend: False
 Bank holiday: False
 Departure time: 2025-07-01 07:45:00

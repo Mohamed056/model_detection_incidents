@@ -185,7 +185,7 @@ Final prediction
   "dt_starting": "2025-07-01 07:45:00",
   "first_message_dt": "2025-07-01 07:42:26",
   "latest_message_dt": "2025-07-01 07:54:37",
-  "ambulance_company": "Ambulances Clichy"
+  "ambulance_company": "Company A"
 }
 ```
 
