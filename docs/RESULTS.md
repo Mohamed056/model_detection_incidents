@@ -1,58 +1,58 @@
-# 📊 Résultats Détaillés
+# 📊 Detailed Results
 
-Ce document présente les résultats complets du projet de détection d'incidents, avec une analyse approfondie des performances et des métriques.
+This document presents the complete results of the incident detection project, with an in-depth analysis of performance and metrics.
 
 ---
 
-## 1. Résultats d'Entraînement
+## 1. Training Results
 
-### 1.1 Métriques par Epoch
+### 1.1 Metrics by Epoch
 
 | Epoch | Training Loss | Validation Loss | Accuracy | F1-Score (Weighted) |
 |-------|---------------|-----------------|----------|---------------------|
 | **1** | 0.396         | 0.281           | 0.903    | 0.894               |
 | **2** | 0.276         | 0.260           | **0.909**| **0.906**           |
 
-**Analyse** :
-- ✅ **Convergence rapide** : Amélioration dès la première epoch
-- ✅ **Pas de sur-apprentissage** : Validation loss continue de diminuer
-- ✅ **Meilleur modèle** : Epoch 2 sélectionné (accuracy 0.909)
+**Analysis** :
+- ✅ **Rapid convergence** : Improvement from the first epoch
+- ✅ **No overfitting** : Validation loss continues to decrease
+- ✅ **Best model** : Epoch 2 selected (accuracy 0.909)
 
-### 1.2 Résultats d'Entraînement
+### 1.2 Training Results
 
-![Résultats d'entraînement](../assets/training_results.png)
+![Training results](../assets/training_results.png)
 
-**Détails de l'entraînement** :
-- **Durée totale** : 5h 41min 50s (20,531 secondes)
-- **Nombre de steps** : 1,016
-- **Training loss moyenne** : 0.335
+**Training details** :
+- **Total duration** : 5h 41min 50s (20,531 seconds)
+- **Number of steps** : 1,016
+- **Average training loss** : 0.335
 - **Training samples/second** : 0.791
 
-**Analyse** :
-- ✅ **Convergence rapide** : Amélioration dès la première epoch
-- ✅ **Pas de sur-apprentissage** : Validation loss continue de diminuer
-- ✅ **Meilleur modèle** : Epoch 2 sélectionné (accuracy 0.909)
-- **Training loss** : Décroissance régulière (0.396 → 0.276)
-- **Validation loss** : Décroissance parallèle (0.281 → 0.260)
+**Analysis** :
+- ✅ **Rapid convergence** : Improvement from the first epoch
+- ✅ **No overfitting** : Validation loss continues to decrease
+- ✅ **Best model** : Epoch 2 selected (accuracy 0.909)
+- **Training loss** : Regular decrease (0.396 → 0.276)
+- **Validation loss** : Parallel decrease (0.281 → 0.260)
 
 ---
 
-## 2. Performance avec Seuil Standard (0.5)
+## 2. Performance with Standard Threshold (0.5)
 
-### 2.1 Métriques Globales
+### 2.1 Global Metrics
 
 - **Accuracy** : ≈ 90%
-- **F1-Score Global** : 0.91
-- **F1-Score Incidents** : 0.73
+- **Global F1-Score** : 0.91
+- **Incident F1-Score** : 0.73
 
-### 2.2 Problème Identifié
+### 2.2 Identified Problem
 
-**Trop de faux négatifs** :
-- Nombreux incidents réels non détectés
-- Le recall pour les incidents est insuffisant pour les besoins métier
-- **Risque métier critique** : Incidents non détectés peuvent avoir des conséquences graves
+**Too many false negatives** :
+- Many real incidents not detected
+- Recall for incidents is insufficient for business needs
+- **Critical business risk** : Undetected incidents can have serious consequences
 
-### 2.3 Rapport de Classification Détaillé
+### 2.3 Detailed Classification Report
 
 ```
               precision    recall  f1-score   support
@@ -65,52 +65,52 @@ non_incident       0.93      0.96      0.95      1655
 weighted avg       0.91      0.91      0.91      2031
 ```
 
-### 2.4 Matrice de Confusion
+### 2.4 Confusion Matrix
 
-![Matrice de confusion - Seuil standard (0.5)](../assets/confusion_matrix_standard.png)
+![Confusion matrix - Standard threshold (0.5)](../assets/confusion_matrix_standard.png)
 
-**Analyse détaillée** :
-- **Vrais positifs** : 252 incidents correctement détectés
-- **Faux négatifs** : **124 incidents non détectés** ⚠️ (problème critique)
-- **Faux positifs** : 61 non-incidents classés comme incidents
-- **Vrais négatifs** : 1594 non-incidents correctement classés
+**Detailed analysis** :
+- **True positives** : 252 incidents correctly detected
+- **False negatives** : **124 incidents not detected** ⚠️ (critical problem)
+- **False positives** : 61 non-incidents classified as incidents
+- **True negatives** : 1594 non-incidents correctly classified
 
-**Problème identifié** : Le modèle fonctionne très bien pour la classe non_incident, mais produit encore **124 faux négatifs** (incidents réels non détectés), ce qui est inacceptable dans un contexte médical.
+**Identified problem** : The model works very well for the non_incident class, but still produces **124 false negatives** (real incidents not detected), which is unacceptable in a medical context.
 
 ---
 
-## 3. Performance avec Seuil Optimal (0.90)
+## 3. Performance with Optimal Threshold (0.90)
 
-### 3.1 Optimisation du Seuil
+### 3.1 Threshold Optimization
 
-Sur demande du tuteur, l'impact du seuil de décision a été étudié :
-- Extraction des probabilités prédites pour la classe incident
-- Variation du seuil de 0.1 à 0.9
-- Tracé des courbes précision – rappel – F1
+At the supervisor's request, the decision threshold impact was studied:
+- Extraction of predicted probabilities for the incident class
+- Threshold variation from 0.1 to 0.9
+- Precision – recall – F1 curve plotting
 
-### 3.2 Résultats
+### 3.2 Results
 
-Un seuil optimal ≈ **0.90** a été identifié, qui :
-- **Maximise le rappel** (détection des incidents)
-- **Maintient une précision acceptable**
-- **Réduit significativement les faux négatifs**
+An optimal threshold ≈ **0.90** was identified, which:
+- **Maximizes recall** (incident detection)
+- **Maintains acceptable precision**
+- **Significantly reduces false negatives**
 
-### 3.3 Métriques
+### 3.3 Metrics
 
-- **Accuracy** : ≈ 90% (maintenue)
-- **Rappel (Recall)** : Beaucoup plus élevé qu'avec le seuil 0.5
-- **Faux négatifs** : Réduits significativement
-- **Compromis** : Rappel élevé (peu d'incidents oubliés) avec précision plus faible (plus de faux positifs)
+- **Accuracy** : ≈ 90% (maintained)
+- **Recall** : Much higher than with threshold 0.5
+- **False negatives** : Significantly reduced
+- **Trade-off** : High recall (few missed incidents) with lower precision (more false positives)
 
-### 3.4 Personnalisation Dynamique (Expérimentée)
+### 3.4 Dynamic Personalization (Experimentation)
 
-Une personnalisation dynamique du seuil a également été expérimentée, en fonction de paramètres de risque identifiés (type de trajet, contexte week-end/jour férié, timing des messages). Cette approche a permis de réduire fortement les faux négatifs, tout en gardant les faux positifs sous contrôle.
+A dynamic threshold personalization was also experimented, based on identified risk parameters (trip type, weekend/holiday context, message timing). This approach significantly reduced false negatives while keeping false positives under control.
 
-#### Résultats avec Seuil Personnalisé
+#### Results with Custom Threshold
 
-![Matrice de confusion - Seuil personnalisé](../assets/confusion_matrix_custom_threshold.png)
+![Confusion matrix - Custom threshold](../assets/confusion_matrix_custom_threshold.png)
 
-**Rapport de classification avec seuil personnalisé** :
+**Classification report with custom threshold** :
 ```
               precision    recall  f1-score   support
 
@@ -122,179 +122,179 @@ non_incident       1.00      0.89      0.94       584
 weighted avg       0.97      0.90      0.92       606
 ```
 
-**Analyse de la matrice de confusion** :
-- **Vrais positifs** : 21 incidents correctement détectés
-- **Faux négatifs** : **1 incident non détecté** ✅ (vs 124 avec seuil standard)
-- **Faux positifs** : 62 non-incidents classés comme incidents
-- **Vrais négatifs** : 522 non-incidents correctement classés
+**Confusion matrix analysis** :
+- **True positives** : 21 incidents correctly detected
+- **False negatives** : **1 incident not detected** ✅ (vs 124 with standard threshold)
+- **False positives** : 62 non-incidents classified as incidents
+- **True negatives** : 522 non-incidents correctly classified
 
-**Impact majeur** : Réduction drastique des faux négatifs de **124 à 1** (-99%), démontrant l'efficacité du seuil personnalisé pour l'objectif métier.
-
----
-
-## 4. Comparaison Détaillée
-
-### 4.1 Tableau Comparatif
-
-| Métrique | Seuil Standard (0.5) | Seuil Optimal (0.90) | Impact |
-|----------|---------------------|---------------------|--------|
-| **Accuracy Globale** | ≈ 90% | ≈ 90% | ✅ Stable |
-| **F1-Score Global** | 0.91 | 0.91 | ✅ Stable |
-| **F1-Score Incidents** | 0.73 | Amélioré | ✅ Amélioration |
-| **Rappel (Recall)** | Faible | **Beaucoup plus élevé** | ✅ **Critique** |
-| **Faux Négatifs** | Nombreux | **Réduits significativement** | ✅ **Critique** |
-| **Précision** | Acceptable | Plus faible | ⚠️ Trade-off accepté |
-| **Faux Positifs** | Acceptables | Plus nombreux | ⚠️ Acceptable (vérification manuelle)
-
-### 4.2 Analyse des Améliorations
-
-#### ✅ Améliorations Majeures
-
-1. **Rappel (Recall) Incident** : **Amélioration significative**
-   - **Avant (seuil 0.5)** : Nombreux incidents non détectés
-   - **Après (seuil 0.90)** : Rappel beaucoup plus élevé
-   - **Impact** : Réduction drastique du risque opérationnel
-
-2. **Faux Négatifs** : **Réduction significative**
-   - **Avant** : Nombreux faux négatifs
-   - **Après** : Faux négatifs réduits significativement
-   - **Impact** : Sécurité opérationnelle considérablement améliorée
-
-3. **F1-Score Incidents** : **Amélioration**
-   - **Avant** : 0.73
-   - **Après** : Amélioré
-   - **Impact** : Meilleure performance globale pour la détection d'incidents
-
-#### ⚠️ Trade-offs Acceptés
-
-1. **Précision Incident** : **Plus faible**
-   - **Justification** : Les faux positifs sont vérifiés manuellement (acceptable)
-   - **Impact** : Augmentation du travail de vérification, mais sans risque critique
-   - **Compromis** : Rappel élevé (peu d'incidents oubliés) avec précision plus faible (plus de faux positifs)
-
-2. **Faux Positifs** : **Plus nombreux**
-   - **Acceptable** : Vérification manuelle sans conséquences graves
-   - **Justification** : Mieux vaut vérifier un faux positif que manquer un vrai incident
-
-#### ✅ Stabilité
-
-1. **Accuracy Globale** : **Maintenue à ≈ 90%**
-   - **Impact** : Performance globale stable
-   - **Justification** : Trade-off acceptable pour améliorer le recall
+**Major impact** : Drastic reduction of false negatives from **124 to 1** (-99%), demonstrating the effectiveness of the custom threshold for the business objective.
 
 ---
 
-## 5. Exemple de Faux Négatif Résiduel
+## 4. Detailed Comparison
 
-Avec le seuil personnalisé, un seul faux négatif a été identifié :
+### 4.1 Comparative Table
+
+| Metric | Standard Threshold (0.5) | Optimal Threshold (0.90) | Impact |
+|--------|-------------------------|-------------------------|--------|
+| **Global Accuracy** | ≈ 90% | ≈ 90% | ✅ Stable |
+| **Global F1-Score** | 0.91 | 0.91 | ✅ Stable |
+| **Incident F1-Score** | 0.73 | Improved | ✅ Improvement |
+| **Recall** | Low | **Much higher** | ✅ **Critical** |
+| **False Negatives** | Many | **Significantly reduced** | ✅ **Critical** |
+| **Precision** | Acceptable | Lower | ⚠️ Accepted trade-off |
+| **False Positives** | Acceptable | More numerous | ⚠️ Acceptable (manual verification)
+
+### 4.2 Improvement Analysis
+
+#### ✅ Major Improvements
+
+1. **Incident Recall** : **Significant improvement**
+   - **Before (threshold 0.5)** : Many incidents not detected
+   - **After (threshold 0.90)** : Much higher recall
+   - **Impact** : Drastic reduction of operational risk
+
+2. **False Negatives** : **Significant reduction**
+   - **Before** : Many false negatives
+   - **After** : Significantly reduced false negatives
+   - **Impact** : Considerably improved operational safety
+
+3. **Incident F1-Score** : **Improvement**
+   - **Before** : 0.73
+   - **After** : Improved
+   - **Impact** : Better overall performance for incident detection
+
+#### ⚠️ Accepted Trade-offs
+
+1. **Incident Precision** : **Lower**
+   - **Justification** : False positives are manually verified (acceptable)
+   - **Impact** : Increased verification work, but without critical risk
+   - **Trade-off** : High recall (few missed incidents) with lower precision (more false positives)
+
+2. **False Positives** : **More numerous**
+   - **Acceptable** : Manual verification without serious consequences
+   - **Justification** : Better to verify a false positive than miss a real incident
+
+#### ✅ Stability
+
+1. **Global Accuracy** : **Maintained at ≈ 90%**
+   - **Impact** : Stable overall performance
+   - **Justification** : Acceptable trade-off to improve recall
+
+---
+
+## 5. Residual False Negative Example
+
+With the custom threshold, only one false negative was identified:
 
 ```
 Index: 383
-Proba Incident: 0.316
+Incident Proba: 0.316
 Text: "ac: bonjour j'ai un souci le vsl sui devait venir est tolbe rn panne sur a86 je ne pourrai effectuer le transport cordialement paramedic: Nous Recommandons un transport ac: merci"
 Trip Type: PIA externe (SSR vers MCO)
 Time Type: Prise en charge
-Week-end: False
-Jour férié: False
-Heure départ: 2025-07-01 07:45:00
-Premier message: 2025-07-01 07:42:26
-Dernier message: 2025-07-01 07:54:37
+Weekend: False
+Bank holiday: False
+Departure time: 2025-07-01 07:45:00
+First message: 2025-07-01 07:42:26
+Last message: 2025-07-01 07:54:37
 ```
 
-**Analyse** :
-- **Problème** : Panne de véhicule mentionnée explicitement
-- **Proba** : 0.316 (en dessous du seuil même personnalisé)
-- **Contexte** : Aucun critère de risque (seuil standard 0.5)
-- **Raison** : Le modèle n'a pas assez de confiance malgré le contexte explicite
+**Analysis** :
+- **Problem** : Vehicle breakdown explicitly mentioned
+- **Proba** : 0.316 (below even the personalized threshold)
+- **Context** : No risk criteria (standard threshold 0.5)
+- **Reason** : Model lacks sufficient confidence despite explicit context
 
-**Amélioration possible** : Intégrer une détection de mots-clés critiques ("panne", "souci", "problème") pour ajuster le seuil.
+**Possible improvement** : Integrate critical keyword detection ("panne", "souci", "problème") to adjust the threshold.
 
 ---
 
-## 6. Visualisations
+## 6. Visualizations
 
-### 6.1 Matrice de Confusion (Seuil Standard)
+### 6.1 Confusion Matrix (Standard Threshold)
 
 ```
-                Prédit
-Réel            non_incident    incident
+                Predicted
+Actual          non_incident    incident
 non_incident        1589           66
 incident             124          252
 ```
 
-### 6.2 Matrice de Confusion (Seuil Personnalisé)
+### 6.2 Confusion Matrix (Custom Threshold)
 
 ```
-                Prédit
-Réel            non_incident    incident
+                Predicted
+Actual          non_incident    incident
 non_incident         520           64
 incident               1           21
 ```
 
-*Note : Les graphiques détaillés sont disponibles dans les notebooks*
+*Note : Detailed graphs are available in the notebooks*
 
 ---
 
-## 7. Interprétation Métier
+## 7. Business Interpretation
 
-### 7.1 Impact Opérationnel
+### 7.1 Operational Impact
 
-#### Avant (Seuil Standard)
+#### Before (Standard Threshold)
 
-- **124 incidents non détectés** sur 376 incidents réels
-- **Risque** : 33% des incidents passent inaperçus
-- **Conséquences** : Retards dans l'intervention, problèmes non résolus
+- **124 incidents not detected** out of 376 real incidents
+- **Risk** : 33% of incidents go unnoticed
+- **Consequences** : Delays in intervention, unresolved problems
 
-#### Après (Seuil Personnalisé)
+#### After (Custom Threshold)
 
-- **1 incident non détecté** sur 22 incidents réels
-- **Risque** : 5% des incidents passent inaperçus
-- **Conséquences** : Risque opérationnel minimal
+- **1 incident not detected** out of 22 real incidents
+- **Risk** : 5% of incidents go unnoticed
+- **Consequences** : Minimal operational risk
 
-### 7.2 Acceptabilité des Faux Positifs
+### 7.2 False Positive Acceptability
 
-Avec le seuil personnalisé :
-- **64 faux positifs** sur 85 prédictions "incident"
-- **Impact** : Vérification manuelle nécessaire
-- **Acceptable** : Mieux vaut vérifier un faux positif que manquer un vrai incident
+With the custom threshold:
+- **64 false positives** out of 85 "incident" predictions
+- **Impact** : Manual verification necessary
+- **Acceptable** : Better to verify a false positive than miss a real incident
 
 ### 7.3 ROI (Return on Investment)
 
-- **Réduction des incidents non détectés** : -99%
-- **Coût** : Augmentation des vérifications manuelles (faux positifs)
-- **Bénéfice** : Sécurité opérationnelle considérablement améliorée
-- **Conclusion** : Trade-off très favorable
+- **Reduction of undetected incidents** : -99%
+- **Cost** : Increase in manual verifications (false positives)
+- **Benefit** : Considerably improved operational safety
+- **Conclusion** : Very favorable trade-off
 
 ---
 
-## 8. Limitations et Perspectives
+## 8. Limitations and Perspectives
 
 ### 8.1 Limitations
 
-1. **Dataset de test différent** : 606 exemples vs 2031 (à préciser)
-2. **Déséquilibre de classes** : Probable déséquilibre (à préciser)
-3. **Seuil fixe par critère** : Réduction uniforme de 0.05 (pourrait être optimisée)
-4. **Un faux négatif résiduel** : Cas limite non couvert
+1. **Different test dataset** : 606 examples vs 2031 (to be specified)
+2. **Class imbalance** : Probable imbalance (to be specified)
+3. **Fixed threshold per criterion** : Uniform reduction of 0.05 (could be optimized)
+4. **One residual false negative** : Edge case not covered
 
-### 8.2 Perspectives d'Amélioration
+### 8.2 Improvement Perspectives
 
-1. **Optimisation des poids** : Poids différenciés par critère
-2. **Détection de mots-clés** : Intégrer des mots-clés critiques
-3. **Apprentissage automatique du seuil** : Optimiser via validation croisée
-4. **Augmentation des données** : Plus d'exemples d'incidents
+1. **Weight optimization** : Differentiated weights per criterion
+2. **Keyword detection** : Integrate critical keywords
+3. **Automatic threshold learning** : Optimize via cross-validation
+4. **Data augmentation** : More incident examples
 
 ---
 
 ## 9. Conclusion
 
-Les résultats démontrent l'efficacité du seuil personnalisé :
+Results demonstrate the effectiveness of the custom threshold:
 
-- ✅ **Recall incident** : +42% (0.67 → 0.95)
-- ✅ **Faux négatifs** : -99% (~124 → ~1)
-- ✅ **Accuracy globale** : Maintenue à 90%
+- ✅ **Incident recall** : +42% (0.67 → 0.95)
+- ✅ **False negatives** : -99% (~124 → ~1)
+- ✅ **Global accuracy** : Maintained at 90%
 
-Cette approche illustre l'importance d'**adapter les solutions techniques au contexte métier** plutôt que d'utiliser des métriques standard sans considération du domaine d'application.
+This approach illustrates the importance of **adapting technical solutions to business context** rather than using standard metrics without considering the application domain.
 
 ---
 
-*Document basé sur le rapport de stage et les résultats des notebooks `train_model.ipynb` et `test_seuil_perso3.ipynb`*
+*Document based on the internship report and results from the `train_model.ipynb` and `test_seuil_perso3.ipynb` notebooks*

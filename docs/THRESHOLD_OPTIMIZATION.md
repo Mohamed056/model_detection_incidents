@@ -1,66 +1,66 @@
-# 🎯 Optimisation du Seuil de Classification
+# 🎯 Classification Threshold Optimization
 
-Ce document détaille l'optimisation du seuil de classification, avec deux approches : **un seuil fixe optimal (0.90)** et **une personnalisation dynamique expérimentée** qui s'adapte au contexte métier.
+This document details the classification threshold optimization, with two approaches: **an optimal fixed threshold (0.90)** and **an experimented dynamic personalization** that adapts to the business context.
 
 ---
 
-## 1. Problématique du Seuil Standard
+## 1. Standard Threshold Problem
 
-### 1.1 Limitation du Seuil Fixe (0.5)
+### 1.1 Fixed Threshold Limitation (0.5)
 
-Avec un seuil de classification fixe à 0.5, le modèle présente les performances suivantes :
+With a fixed classification threshold of 0.5, the model shows the following performance:
 
 - **Accuracy** : ≈ 90%
-- **F1-Score Global** : 0.91
-- **F1-Score Incidents** : 0.73
+- **Global F1-Score** : 0.91
+- **Incident F1-Score** : 0.73
 
-**Problème critique** : **Trop de faux négatifs**
-- Nombreux incidents réels non détectés
-- Dans un contexte médical, un incident non détecté peut avoir des conséquences graves
-- Le recall pour les incidents est insuffisant pour les besoins métier
+**Critical problem** : **Too many false negatives**
+- Many real incidents not detected
+- In a medical context, an undetected incident can have serious consequences
+- Recall for incidents is insufficient for business needs
 
-### 1.2 Impact Métier
+### 1.2 Business Impact
 
-Un faux négatif signifie :
-- ❌ Un incident réel n'est pas détecté
-- ❌ Pas d'alerte générée
-- ❌ Risque de non-intervention
-- ❌ Conséquences potentielles graves
+A false negative means:
+- ❌ A real incident is not detected
+- ❌ No alert generated
+- ❌ Risk of non-intervention
+- ❌ Potential serious consequences
 
-Un faux positif signifie :
-- ⚠️ Une alerte est générée pour un non-incident
-- ✅ Vérification manuelle (acceptable)
-- ✅ Pas de risque critique
+A false positive means:
+- ⚠️ An alert is generated for a non-incident
+- ✅ Manual verification (acceptable)
+- ✅ No critical risk
 
-**Conclusion** : Dans ce contexte, **le recall est plus important que la precision**.
-
----
-
-## 2. Solutions : Seuil Optimal et Personnalisation Dynamique
-
-### 2.1 Approche 1 : Seuil Fixe Optimal (0.90)
-
-Après analyse des courbes précision-rappel-F1 en faisant varier le seuil de 0.1 à 0.9, un **seuil optimal de 0.90** a été identifié. Ce seuil permet de :
-- Maximiser le rappel (détection des incidents)
-- Maintenir une précision acceptable
-- Réduire significativement les faux négatifs
-
-### 2.2 Approche 2 : Personnalisation Dynamique (Expérimentée)
-
-Une personnalisation dynamique du seuil a également été expérimentée, en fonction de paramètres de risque identifiés. Cette approche permet d'adapter le seuil selon le **contexte métier** de chaque exemple.
-
-**Paramètres de risque intégrés** :
-- Type de trajet
-- Contexte week-end/jour férié
-- Timing des messages
-
-Cette approche a permis de réduire fortement les faux négatifs, tout en gardant les faux positifs sous contrôle.
+**Conclusion** : In this context, **recall is more important than precision**.
 
 ---
 
-## 3. Facteurs de Risque Intégrés
+## 2. Solutions: Optimal Threshold and Dynamic Personalization
 
-### 3.1 Types de Transport à Risque
+### 2.1 Approach 1: Optimal Fixed Threshold (0.90)
+
+After analyzing precision-recall-F1 curves by varying the threshold from 0.1 to 0.9, an **optimal threshold of 0.90** was identified. This threshold allows:
+- Maximizing recall (incident detection)
+- Maintaining acceptable precision
+- Significantly reducing false negatives
+
+### 2.2 Approach 2: Dynamic Personalization (Experienced)
+
+Dynamic threshold personalization was also experimented with, based on identified risk parameters. This approach adapts the threshold according to the **business context** of each example.
+
+**Integrated risk parameters** :
+- Trip type
+- Weekend/holiday context
+- Message timing
+
+This approach significantly reduced false negatives while keeping false positives under control.
+
+---
+
+## 3. Integrated Risk Factors
+
+### 3.1 High-Risk Transport Types
 
 ```python
 TRIP_TYPES_RISQUES = [
@@ -72,9 +72,9 @@ TRIP_TYPES_RISQUES = [
 ]
 ```
 
-**Justification** : Ces types de transport sont statistiquement plus sujets aux incidents (retards, annulations, problèmes logistiques).
+**Justification** : These transport types are statistically more prone to incidents (delays, cancellations, logistical problems).
 
-### 3.2 Types de Temps à Risque
+### 3.2 High-Risk Time Types
 
 ```python
 TIME_TYPES_RISQUES = [
@@ -84,144 +84,144 @@ TIME_TYPES_RISQUES = [
 ```
 
 **Justification** :
-- **Rendez-vous** : Contraintes horaires strictes, risque de retard
-- **Immédiat** : Urgence, risque de problème logistique
+- **Appointment** : Strict time constraints, delay risk
+- **Immediate** : Urgency, logistical problem risk
 
-### 3.3 Contexte Temporel
+### 3.3 Temporal Context
 
-#### Week-end
-
-```python
-if exemple["is_weekend"]:
-    seuil -= REDUCTION
-```
-
-**Justification** : Les week-ends présentent souvent :
-- Moins de disponibilité des transporteurs
-- Horaires réduits
-- Risque accru d'incidents
-
-#### Jours Fériés
+#### Weekend
 
 ```python
-if exemple["is_bank_holidays"]:
-    seuil -= REDUCTION
+if example["is_weekend"]:
+    threshold -= REDUCTION
 ```
 
-**Justification** : Similaire aux week-ends, avec des contraintes supplémentaires.
+**Justification** : Weekends often present:
+- Less transporter availability
+- Reduced hours
+- Increased incident risk
 
-### 3.4 Timing des Messages
-
-#### Premier Message Après l'Heure de Départ
+#### Bank Holidays
 
 ```python
-if premier_message_apres_depart_prevu(exemple):
-    seuil -= REDUCTION
+if example["is_bank_holidays"]:
+    threshold -= REDUCTION
 ```
 
-**Justification** : Si le premier message arrive après l'heure prévue, cela peut indiquer :
-- Un retard
-- Un problème de communication
-- Un incident en cours
+**Justification** : Similar to weekends, with additional constraints.
 
-#### Dernier Message Après l'Heure de Départ
+### 3.4 Message Timing
+
+#### First Message After Scheduled Departure
 
 ```python
-if dernier_message_apres_depart_prevu(exemple):
-    seuil -= REDUCTION
+if first_message_after_scheduled_departure(example):
+    threshold -= REDUCTION
 ```
 
-**Justification** : Si des messages continuent après l'heure prévue, cela peut indiquer :
-- Un problème non résolu
-- Des échanges supplémentaires nécessaires
-- Un incident en cours
+**Justification** : If the first message arrives after the scheduled time, this may indicate:
+- A delay
+- A communication problem
+- An ongoing incident
+
+#### Last Message After Scheduled Departure
+
+```python
+if last_message_after_scheduled_departure(example):
+    threshold -= REDUCTION
+```
+
+**Justification** : If messages continue after the scheduled time, this may indicate:
+- An unresolved problem
+- Additional exchanges needed
+- An ongoing incident
 
 ---
 
-## 4. Exemples Concrets
+## 4. Concrete Examples
 
-### 4.1 Exemple 1 : Transport Standard
+### 4.1 Example 1: Standard Transport
 
-**Contexte** :
-- Type : "PIA externe (SSR vers MCO)" (non à risque)
-- Temps : "Prise en charge" (non à risque)
-- Week-end : Non
-- Jour férié : Non
-- Messages : Avant l'heure prévue
+**Context** :
+- Type: "PIA externe (SSR vers MCO)" (non-risk)
+- Time: "Prise en charge" (non-risk)
+- Weekend: No
+- Bank holiday: No
+- Messages: Before scheduled time
 
-**Calcul du seuil** :
+**Threshold calculation** :
 ```
-seuil = 0.5  # Aucun critère de risque
-```
-
-**Résultat** : Seuil standard (0.5)
-
-### 4.2 Exemple 2 : Transport à Risque Modéré
-
-**Contexte** :
-- Type : "Retour à domicile" (risque)
-- Temps : "Rendez-vous" (risque)
-- Week-end : Non
-- Jour férié : Non
-- Messages : Avant l'heure prévue
-
-**Calcul du seuil** :
-```
-seuil = 0.5
-seuil -= 0.05  # Type à risque
-seuil -= 0.05  # Temps à risque
-seuil = 0.40
+threshold = 0.5  # No risk criteria
 ```
 
-**Résultat** : Seuil réduit à 0.40
+**Result** : Standard threshold (0.5)
 
-### 4.3 Exemple 3 : Transport à Risque Élevé
+### 4.2 Example 2: Moderate Risk Transport
 
-**Contexte** :
-- Type : "Retour à domicile" (risque)
-- Temps : "Immédiat" (risque)
-- Week-end : Oui (risque)
-- Jour férié : Non
-- Premier message après l'heure prévue (risque)
+**Context** :
+- Type: "Retour à domicile" (risk)
+- Time: "Rendez-vous" (risk)
+- Weekend: No
+- Bank holiday: No
+- Messages: Before scheduled time
 
-**Calcul du seuil** :
+**Threshold calculation** :
 ```
-seuil = 0.5
-seuil -= 0.05  # Type à risque
-seuil -= 0.05  # Temps à risque
-seuil -= 0.05  # Week-end
-seuil -= 0.05  # Message après heure prévue
-seuil = 0.30
+threshold = 0.5
+threshold -= 0.05  # Risk type
+threshold -= 0.05  # Risk time
+threshold = 0.40
 ```
 
-**Résultat** : Seuil minimum (0.30)
+**Result** : Threshold reduced to 0.40
 
-### 4.4 Exemple 4 : Cas Limite (Tous les Critères)
+### 4.3 Example 3: High Risk Transport
 
-**Contexte** :
-- Type : "Retour à domicile" (risque)
-- Temps : "Immédiat" (risque)
-- Week-end : Oui (risque)
-- Jour férié : Oui (risque)
-- Premier message après l'heure prévue (risque)
-- Dernier message après l'heure prévue (risque)
+**Context** :
+- Type: "Retour à domicile" (risk)
+- Time: "Immédiat" (risk)
+- Weekend: Yes (risk)
+- Bank holiday: No
+- First message after scheduled time (risk)
 
-**Calcul du seuil** :
+**Threshold calculation** :
 ```
-seuil = 0.5
-seuil -= 0.05 × 6  # 6 critères de risque
-seuil = 0.20
-seuil = max(0.20, 0.30)  # Application du seuil minimum
-seuil = 0.30
+threshold = 0.5
+threshold -= 0.05  # Risk type
+threshold -= 0.05  # Risk time
+threshold -= 0.05  # Weekend
+threshold -= 0.05  # Message after scheduled time
+threshold = 0.30
 ```
 
-**Résultat** : Seuil minimum (0.30) - le seuil ne descend jamais en dessous
+**Result** : Minimum threshold (0.30)
+
+### 4.4 Example 4: Edge Case (All Criteria)
+
+**Context** :
+- Type: "Retour à domicile" (risk)
+- Time: "Immédiat" (risk)
+- Weekend: Yes (risk)
+- Bank holiday: Yes (risk)
+- First message after scheduled time (risk)
+- Last message after scheduled time (risk)
+
+**Threshold calculation** :
+```
+threshold = 0.5
+threshold -= 0.05 × 6  # 6 risk criteria
+threshold = 0.20
+threshold = max(0.20, 0.30)  # Apply minimum threshold
+threshold = 0.30
+```
+
+**Result** : Minimum threshold (0.30) - threshold never goes below this
 
 ---
 
-## 5. Résultats avec Seuil Personnalisé
+## 5. Results with Custom Threshold
 
-### 5.1 Performance Globale
+### 5.1 Global Performance
 
 ```
               precision    recall  f1-score   support
@@ -232,116 +232,116 @@ non_incident       1.00      0.89      0.94       584
     accuracy                           0.90       606
 ```
 
-### 5.2 Comparaison
+### 5.2 Comparison
 
-| Métrique | Seuil Standard | Seuil Personnalisé | Évolution |
-|----------|----------------|-------------------|-----------|
-| **Recall Incident** | 0.67 | **0.95** | **+42%** ✅ |
-| **Precision Incident** | 0.81 | 0.25 | -69% ⚠️ |
-| **F1-Score Incident** | 0.73 | 0.40 | -45% ⚠️ |
-| **Accuracy Globale** | 0.91 | 0.90 | -1% ✅ |
-| **Faux Négatifs** | ~124 | **~1** | **-99%** ✅ |
+| Metric | Standard Threshold | Custom Threshold | Evolution |
+|--------|-------------------|------------------|-----------|
+| **Incident Recall** | 0.67 | **0.95** | **+42%** ✅ |
+| **Incident Precision** | 0.81 | 0.25 | -69% ⚠️ |
+| **Incident F1-Score** | 0.73 | 0.40 | -45% ⚠️ |
+| **Global Accuracy** | 0.91 | 0.90 | -1% ✅ |
+| **False Negatives** | ~124 | **~1** | **-99%** ✅ |
 
-### 5.3 Analyse
+### 5.3 Analysis
 
-#### ✅ Points Positifs
+#### ✅ Positive Points
 
-1. **Recall incident** : **0.95** (seulement 5% des incidents non détectés)
-   - **Avant** : 33% des incidents non détectés
-   - **Après** : 5% des incidents non détectés
-   - **Amélioration** : +42%
+1. **Incident recall** : **0.95** (only 5% of incidents not detected)
+   - **Before** : 33% of incidents not detected
+   - **After** : 5% of incidents not detected
+   - **Improvement** : +42%
 
-2. **Faux négatifs** : Réduction drastique
-   - **Avant** : ~124 faux négatifs
-   - **Après** : ~1 faux négatif
-   - **Réduction** : -99%
+2. **False negatives** : Drastic reduction
+   - **Before** : ~124 false negatives
+   - **After** : ~1 false negative
+   - **Reduction** : -99%
 
-3. **Accuracy globale** : Maintenue à 90%
-   - Impact minimal sur la performance globale
+3. **Global accuracy** : Maintained at 90%
+   - Minimal impact on overall performance
 
-#### ⚠️ Trade-offs Acceptés
+#### ⚠️ Accepted Trade-offs
 
-1. **Precision incident** : 0.25 (75% de faux positifs)
-   - **Acceptable** : Les faux positifs sont vérifiés manuellement
-   - **Moins critique** : Un faux positif n'a pas de conséquences graves
+1. **Incident precision** : 0.25 (75% false positives)
+   - **Acceptable** : False positives are manually verified
+   - **Less critical** : A false positive has no serious consequences
 
-2. **F1-Score incident** : 0.40 (baisse due à la precision)
-   - **Attendu** : Trade-off precision/recall
-   - **Justifié** : Le recall est prioritaire dans ce contexte
-
----
-
-## 6. Validation Métier
-
-### 6.1 Critères de Validation
-
-Le seuil personnalisé a été validé avec les experts métier selon :
-
-1. ✅ **Réduction des faux négatifs** : Objectif atteint (-99%)
-2. ✅ **Recall élevé** : 95% (objectif > 90%)
-3. ✅ **Accuracy globale** : Maintenue à 90%
-4. ✅ **Acceptabilité des faux positifs** : Vérification manuelle acceptable
-
-### 6.2 Impact Opérationnel
-
-- **Avant** : 33% des incidents non détectés → Risque opérationnel élevé
-- **Après** : 5% des incidents non détectés → Risque opérationnel minimal
-- **Faux positifs** : Augmentation acceptable (vérification manuelle)
+2. **Incident F1-Score** : 0.40 (decrease due to precision)
+   - **Expected** : Precision/recall trade-off
+   - **Justified** : Recall is priority in this context
 
 ---
 
-## 7. Améliorations Futures
+## 6. Business Validation
 
-### 7.1 Optimisation des Poids
+### 6.1 Validation Criteria
 
-Actuellement, chaque critère réduit le seuil de **0.05** de manière uniforme. Améliorations possibles :
+The custom threshold was validated with business experts according to:
 
-1. **Poids différenciés** : Certains critères pourraient avoir plus d'impact
+1. ✅ **False negative reduction** : Objective achieved (-99%)
+2. ✅ **High recall** : 95% (objective > 90%)
+3. ✅ **Global accuracy** : Maintained at 90%
+4. ✅ **False positive acceptability** : Manual verification acceptable
+
+### 6.2 Operational Impact
+
+- **Before** : 33% of incidents not detected → High operational risk
+- **After** : 5% of incidents not detected → Minimal operational risk
+- **False positives** : Acceptable increase (manual verification)
+
+---
+
+## 7. Future Improvements
+
+### 7.1 Weight Optimization
+
+Currently, each criterion reduces the threshold by **0.05** uniformly. Possible improvements:
+
+1. **Differentiated weights** : Some criteria could have more impact
    ```python
    REDUCTIONS = {
-       "trip_type": 0.08,      # Plus important
+       "trip_type": 0.08,      # More important
        "time_type": 0.05,
-       "weekend": 0.03,         # Moins important
+       "weekend": 0.03,         # Less important
        "bank_holiday": 0.03,
        "message_timing": 0.06
    }
    ```
 
-2. **Apprentissage automatique** : Optimiser les poids via validation croisée
+2. **Automatic learning** : Optimize weights via cross-validation
 
-### 7.2 Seuil Adaptatif
+### 7.2 Adaptive Threshold
 
-Au lieu d'un seuil fixe par exemple, le seuil pourrait s'adapter à la distribution des probabilités :
+Instead of a fixed threshold per example, the threshold could adapt to probability distribution:
 
 ```python
-def seuil_adaptatif(probas_incident, contexte):
-    # Seuil basé sur le percentile des probabilités
-    seuil_base = np.percentile(probas_incident, 50)
-    # Ajustement selon le contexte
-    seuil = ajuster_selon_contexte(seuil_base, contexte)
-    return seuil
+def adaptive_threshold(incident_probas, context):
+    # Threshold based on probability percentile
+    base_threshold = np.percentile(incident_probas, 50)
+    # Adjustment based on context
+    threshold = adjust_by_context(base_threshold, context)
+    return threshold
 ```
 
-### 7.3 Features Additionnelles
+### 7.3 Additional Features
 
-Intégrer d'autres facteurs de risque :
-- Historique du transporteur (taux d'incidents passés)
-- Distance du transport
-- Heure de la journée
-- Conditions météorologiques (si disponible)
+Integrate other risk factors:
+- Transporter history (past incident rates)
+- Transport distance
+- Time of day
+- Weather conditions (if available)
 
 ---
 
 ## 8. Conclusion
 
-L'optimisation du seuil de classification représente l'innovation principale de ce projet. En adaptant le seuil au contexte métier, nous avons réussi à :
+Threshold optimization represents the main innovation of this project. By adapting the threshold to the business context, we succeeded in:
 
-- ✅ **Réduire drastiquement les faux négatifs** (-99%)
-- ✅ **Améliorer le recall** de 67% à 95% (+42%)
-- ✅ **Maintenir l'accuracy globale** à 90%
+- ✅ **Drastically reducing false negatives** (-99%)
+- ✅ **Improving recall** from 67% to 95% (+42%)
+- ✅ **Maintaining global accuracy** at 90%
 
-Cette approche démontre l'importance de **comprendre le contexte métier** et d'adapter les solutions techniques aux contraintes réelles, plutôt que d'utiliser des métriques standard sans considération du domaine d'application.
+This approach demonstrates the importance of **understanding the business context** and adapting technical solutions to real constraints, rather than using standard metrics without considering the application domain.
 
 ---
 
-*Document basé sur le rapport de stage et les expérimentations du notebook `test_seuil_perso3.ipynb`*
+*Document based on the internship report and experiments from the `test_seuil_perso3.ipynb` notebook*

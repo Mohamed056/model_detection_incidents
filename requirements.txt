@@ -1,5 +1,5 @@
-# Requirements pour le projet de détection d'incidents NLP
-# Note: Ce projet est une vitrine/portfolio, non exécutable directement
+# Requirements for the NLP incident detection project
+# Note: This project is a showcase/portfolio, not directly executable
 
 # Core ML/NLP
 torch>=1.13.0

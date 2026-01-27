@@ -1,105 +1,105 @@
-# 🏗️ Architecture du Projet
+# 🏗️ Project Architecture
 
-Ce document présente l'architecture technique et la structure du projet de détection d'incidents.
+This document presents the technical architecture and structure of the incident detection project.
 
 ---
 
-## 1. Vue d'Ensemble
+## 1. Overview
 
 ```
 Model paramedic/
 │
-├── README.md                    # Documentation principale (orientée recruteur)
-├── ARCHITECTURE.md              # Ce fichier
-├── .gitignore                   # Fichiers à ignorer
+├── README.md                    # Main documentation (recruiter-oriented)
+├── ARCHITECTURE.md              # This file
+├── .gitignore                   # Files to ignore
 │
-├── docs/                        # Documentation détaillée
-│   ├── METHODOLOGY.md           # Méthodologie complète
-│   ├── THRESHOLD_OPTIMIZATION.md # Optimisation du seuil
-│   └── RESULTS.md               # Résultats détaillés
+├── docs/                        # Detailed documentation
+│   ├── METHODOLOGY.md           # Complete methodology
+│   ├── THRESHOLD_OPTIMIZATION.md # Threshold optimization
+│   └── RESULTS.md               # Detailed results
 │
-└── notebooks/                   # Notebooks d'expérimentation
-    ├── train_model.ipynb        # Entraînement du modèle CamemBERT
-    └── test_seuil_perso3.ipynb  # Tests du seuil personnalisé
+└── notebooks/                   # Experimentation notebooks
+    ├── train_model.ipynb        # CamemBERT model training
+    └── test_seuil_perso3.ipynb  # Custom threshold tests
 ```
 
 ---
 
-## 2. Pipeline de Traitement
+## 2. Processing Pipeline
 
-### 2.1 Flux de Données
+### 2.1 Data Flow
 
 ```
-Données brutes (JSONL)
+Raw data (JSONL)
     ↓
-Préprocessing
-    ├── Encodage des labels (non_incident: 0, incident: 1)
-    └── Tokenisation (CamemBERT, max_length=128)
+Preprocessing
+    ├── Label encoding (non_incident: 0, incident: 1)
+    └── Tokenization (CamemBERT, max_length=128)
     ↓
-Dataset Hugging Face
-    ├── Train (8,123 exemples)
-    └── Test (2,031 exemples)
+Hugging Face Dataset
+    ├── Train (8,123 examples)
+    └── Test (2,031 examples)
     ↓
-Entraînement
-    ├── Modèle: CamemBERT-base
+Training
+    ├── Model: CamemBERT-base
     ├── Fine-tuning: 2 epochs
-    └── Hyperparamètres optimisés
+    └── Optimized hyperparameters
     ↓
-Modèle entraîné
+Trained model
     ↓
-Évaluation
-    ├── Seuil standard (0.5)
-    └── Seuil personnalisé (dynamique)
+Evaluation
+    ├── Standard threshold (0.5)
+    └── Custom threshold (dynamic)
     ↓
-Résultats et métriques
+Results and metrics
 ```
 
-### 2.2 Composants Principaux
+### 2.2 Main Components
 
-#### 2.2.1 Préprocessing
+#### 2.2.1 Preprocessing
 
-- **Format d'entrée** : JSONL (une ligne par exemple)
-- **Champs utilisés** :
-  - `text` : Message de communication
+- **Input format** : JSONL (one line per example)
+- **Fields used** :
+  - `text` : Communication message
   - `label` : Label (non_incident / incident)
-  - `trip_type` : Type de transport
-  - `time_type` : Type de temps
-  - `is_weekend` : Booléen
-  - `is_bank_holidays` : Booléen
-  - `dt_starting` : Heure de départ prévue
-  - `first_message_dt` : Heure du premier message
-  - `latest_message_dt` : Heure du dernier message
+  - `trip_type` : Transport type
+  - `time_type` : Time type
+  - `is_weekend` : Boolean
+  - `is_bank_holidays` : Boolean
+  - `dt_starting` : Scheduled departure time
+  - `first_message_dt` : First message time
+  - `latest_message_dt` : Latest message time
 
-- **Tokenisation** :
+- **Tokenization** :
   - Tokenizer : `CamembertTokenizer`
   - Max length : 128 tokens
   - Padding : `max_length`
-  - Truncation : Activée
+  - Truncation : Enabled
 
-#### 2.2.2 Modèle
+#### 2.2.2 Model
 
 - **Architecture** : `CamembertForSequenceClassification`
 - **Base** : `camembert-base` (Hugging Face)
-- **Paramètres** : ~110M
-- **Sortie** : 2 logits (classification binaire)
+- **Parameters** : ~110M
+- **Output** : 2 logits (binary classification)
 
-#### 2.2.3 Entraînement
+#### 2.2.3 Training
 
 - **Framework** : Hugging Face Transformers (Trainer)
 - **Backend** : PyTorch
-- **Hyperparamètres** : Voir [METHODOLOGY.md](docs/METHODOLOGY.md)
+- **Hyperparameters** : See [METHODOLOGY.md](docs/METHODOLOGY.md)
 
 #### 2.2.4 Classification
 
-- **Seuil standard** : 0.5 (par défaut)
-- **Seuil personnalisé** : Dynamique selon le contexte
+- **Standard threshold** : 0.5 (default)
+- **Custom threshold** : Dynamic based on context
   - Base : 0.5
-  - Réduction : -0.05 par critère de risque
+  - Reduction : -0.05 per risk criterion
   - Minimum : 0.3
 
 ---
 
-## 3. Architecture du Modèle
+## 3. Model Architecture
 
 ### 3.1 CamemBERT
 
@@ -126,42 +126,42 @@ Logits (2 classes)
     ↓
 Softmax
     ↓
-Probabilités [P(non_incident), P(incident)]
+Probabilities [P(non_incident), P(incident)]
 ```
 
-### 3.2 Classification avec Seuil Personnalisé
+### 3.2 Classification with Custom Threshold
 
 ```
-Probabilités du modèle
+Model probabilities
     ↓
 P(incident) = probas[:, 1]
     ↓
-Calcul du seuil personnalisé
-    ├── Seuil de base: 0.5
-    ├── Réduction par critère de risque: -0.05
-    └── Seuil minimum: 0.3
+Custom threshold calculation
+    ├── Base threshold: 0.5
+    ├── Reduction per risk criterion: -0.05
+    └── Minimum threshold: 0.3
     ↓
-Comparaison: P(incident) > seuil_personnalise ?
+Comparison: P(incident) > custom_threshold ?
     ↓
-Prédiction finale
+Final prediction
 ```
 
 ---
 
-## 4. Technologies et Dépendances
+## 4. Technologies and Dependencies
 
-### 4.1 Bibliothèques Principales
+### 4.1 Main Libraries
 
-- **transformers** (Hugging Face) : Modèles pré-entraînés et fine-tuning
-- **datasets** (Hugging Face) : Gestion des datasets
-- **torch** (PyTorch) : Backend de calcul
-- **scikit-learn** : Métriques et évaluation
-- **numpy** : Calculs numériques
-- **matplotlib/seaborn** : Visualisations
+- **transformers** (Hugging Face) : Pre-trained models and fine-tuning
+- **datasets** (Hugging Face) : Dataset management
+- **torch** (PyTorch) : Computing backend
+- **scikit-learn** : Metrics and evaluation
+- **numpy** : Numerical computations
+- **matplotlib/seaborn** : Visualizations
 
 ### 4.2 Versions
 
-*À préciser selon l'environnement utilisé*
+*To be specified according to the environment used*
 
 - Python : 3.8+
 - transformers : 4.x+
@@ -170,9 +170,9 @@ Prédiction finale
 
 ---
 
-## 5. Structure des Données
+## 5. Data Structure
 
-### 5.1 Format d'Entrée (JSONL)
+### 5.1 Input Format (JSONL)
 
 ```json
 {
@@ -189,114 +189,114 @@ Prédiction finale
 }
 ```
 
-### 5.2 Format Après Tokenisation
+### 5.2 Format After Tokenization
 
 ```python
 {
-  "input_ids": [5, 1234, 5678, ...],  # Tokens encodés
-  "attention_mask": [1, 1, 1, ...],    # Masque d'attention
-  "label": 1                           # Label encodé (0 ou 1)
+  "input_ids": [5, 1234, 5678, ...],  # Encoded tokens
+  "attention_mask": [1, 1, 1, ...],    # Attention mask
+  "label": 1                           # Encoded label (0 or 1)
 }
 ```
 
-### 5.3 Format de Sortie
+### 5.3 Output Format
 
 ```python
 {
-  "predictions": [[logit_0, logit_1], ...],  # Logits bruts
-  "label_ids": [0, 1, 0, ...],               # Labels réels
-  "probabilities": [[0.8, 0.2], ...]         # Probabilités (softmax)
+  "predictions": [[logit_0, logit_1], ...],  # Raw logits
+  "label_ids": [0, 1, 0, ...],               # Real labels
+  "probabilities": [[0.8, 0.2], ...]         # Probabilities (softmax)
 }
 ```
 
 ---
 
-## 6. Flux d'Exécution
+## 6. Execution Flow
 
-### 6.1 Phase d'Entraînement
+### 6.1 Training Phase
 
-1. **Chargement des données** : Lecture des fichiers JSONL
-2. **Préprocessing** : Encodage des labels et tokenisation
-3. **Initialisation du modèle** : Chargement de `camembert-base`
-4. **Configuration de l'entraînement** : Hyperparamètres
-5. **Entraînement** : Fine-tuning sur 2 epochs
-6. **Sauvegarde** : Modèle et tokenizer sauvegardés
+1. **Data loading** : Reading JSONL files
+2. **Preprocessing** : Label encoding and tokenization
+3. **Model initialization** : Loading `camembert-base`
+4. **Training configuration** : Hyperparameters
+5. **Training** : Fine-tuning over 2 epochs
+6. **Saving** : Model and tokenizer saved
 
-### 6.2 Phase d'Évaluation
+### 6.2 Evaluation Phase
 
-1. **Chargement du modèle** : Modèle entraîné
-2. **Préprocessing du test** : Tokenisation des données de test
-3. **Prédiction** : Génération des probabilités
-4. **Classification avec seuil standard** : Seuil fixe à 0.5
-5. **Classification avec seuil personnalisé** : Seuil dynamique
-6. **Évaluation** : Calcul des métriques (precision, recall, F1, accuracy)
-7. **Visualisation** : Matrices de confusion
+1. **Model loading** : Trained model
+2. **Test preprocessing** : Test data tokenization
+3. **Prediction** : Probability generation
+4. **Classification with standard threshold** : Fixed threshold at 0.5
+5. **Classification with custom threshold** : Dynamic threshold
+6. **Evaluation** : Metric calculation (precision, recall, F1, accuracy)
+7. **Visualization** : Confusion matrices
 
 ---
 
-## 7. Points d'Extension
+## 7. Extension Points
 
-### 7.1 Améliorations Possibles
+### 7.1 Possible Improvements
 
-1. **Pipeline de production** :
-   - API REST pour la prédiction en temps réel
-   - Intégration dans un système de monitoring
-   - Alertes automatiques
+1. **Production pipeline** :
+   - REST API for real-time prediction
+   - Integration into a monitoring system
+   - Automatic alerts
 
-2. **Optimisation** :
-   - Quantification du modèle (réduction de taille)
-   - Optimisation pour l'inférence (ONNX, TensorRT)
-   - Mise en cache des prédictions
+2. **Optimization** :
+   - Model quantization (size reduction)
+   - Inference optimization (ONNX, TensorRT)
+   - Prediction caching
 
 3. **Monitoring** :
-   - Tracking des performances en production
-   - Détection de dérive (data drift)
-   - A/B testing des seuils
+   - Production performance tracking
+   - Data drift detection
+   - Threshold A/B testing
 
-4. **Amélioration du modèle** :
-   - Fine-tuning continu (online learning)
-   - Ensemble de modèles
-   - Modèles spécialisés par type d'incident
-
----
-
-## 8. Sécurité et Confidentialité
-
-### 8.1 Données Sensibles
-
-- ⚠️ **Aucune donnée confidentielle** : Les exemples présentés sont fictifs
-- ⚠️ **Anonymisation** : Aucun nom réel d'entreprise ou de client
-- ⚠️ **Conformité** : Respect des réglementations (RGPD, etc.)
-
-### 8.2 Bonnes Pratiques
-
-- **Versioning** : Git pour le code
-- **Documentation** : Documentation complète du projet
-- **Tests** : Validation sur données de test séparées
-- **Reproductibilité** : Seeds fixes pour la reproductibilité
+4. **Model improvement** :
+   - Continuous fine-tuning (online learning)
+   - Model ensembles
+   - Models specialized by incident type
 
 ---
 
-## 9. Déploiement
+## 8. Security and Confidentiality
 
-### 9.1 Environnement de Développement
+### 8.1 Sensitive Data
 
-- **Notebooks Jupyter** : Expérimentation et prototypage
-- **Google Colab** : Entraînement sur GPU (si utilisé)
+- ⚠️ **No confidential data** : Examples presented are fictional
+- ⚠️ **Anonymization** : No real company or client names
+- ⚠️ **Compliance** : Respect of regulations (GDPR, etc.)
+
+### 8.2 Best Practices
+
+- **Versioning** : Git for code
+- **Documentation** : Complete project documentation
+- **Testing** : Validation on separate test data
+- **Reproducibility** : Fixed seeds for reproducibility
+
+---
+
+## 9. Deployment
+
+### 9.1 Development Environment
+
+- **Jupyter Notebooks** : Experimentation and prototyping
+- **Google Colab** : GPU training (if used)
 
 ### 9.2 Production (Perspectives)
 
-- **API REST** : Flask/FastAPI pour servir le modèle
-- **Containerisation** : Docker pour l'isolation
-- **Orchestration** : Kubernetes pour la scalabilité
-- **Monitoring** : Logs et métriques de performance
+- **REST API** : Flask/FastAPI to serve the model
+- **Containerization** : Docker for isolation
+- **Orchestration** : Kubernetes for scalability
+- **Monitoring** : Logs and performance metrics
 
 ---
 
 ## 10. Conclusion
 
-Cette architecture présente un pipeline NLP complet et modulaire pour la détection d'incidents, avec une innovation majeure : **l'adaptation dynamique du seuil de classification au contexte métier**. La structure est conçue pour être extensible et maintenable, permettant des améliorations futures.
+This architecture presents a complete and modular NLP pipeline for incident detection, with a major innovation: **dynamic adaptation of the classification threshold to business context**. The structure is designed to be extensible and maintainable, allowing future improvements.
 
 ---
 
-*Document basé sur l'analyse des notebooks et la méthodologie du projet*
+*Document based on notebook analysis and project methodology*

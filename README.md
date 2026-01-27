@@ -1,6 +1,6 @@
-# 🚑 Détection d'Incidents dans les Communications de Transport Médical
+# 🚑 Incident Detection in Medical Transport Communications
 
-> Projet de classification NLP utilisant CamemBERT pour identifier automatiquement les incidents dans les échanges de communication entre transporteurs médicaux et opérateurs.
+> NLP classification project using CamemBERT to automatically identify incidents in communication exchanges between medical transporters and operators.
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
 [![Transformers](https://img.shields.io/badge/Transformers-HuggingFace-orange.svg)](https://huggingface.co/)
@@ -8,49 +8,49 @@
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/Status-Portfolio-yellow.svg)](https://github.com)
 
-**🎯 Résultat clé** : Réduction des faux négatifs de **124 à 1** (-99%) grâce à l'optimisation du seuil de classification.
+**🎯 Key Result** : False negatives reduced from **124 to 1** (-99%) through classification threshold optimization.
 
-## 📋 Résumé Exécutif
+## 📋 Executive Summary
 
-Ce projet présente un système de classification binaire utilisant le modèle de langue français **CamemBERT** pour détecter automatiquement les incidents dans les communications de transport médical. L'innovation principale réside dans l'implémentation d'un **seuil de classification personnalisé et dynamique** qui s'adapte aux contextes métier, permettant de réduire significativement les faux négatifs tout en maintenant une précision élevée.
+This project presents a binary classification system using the French language model **CamemBERT** to automatically detect incidents in medical transport communications. The main innovation lies in implementing a **personalized and dynamic classification threshold** that adapts to business contexts, significantly reducing false negatives while maintaining high accuracy.
 
-### 🎯 Objectifs Métier
+### 🎯 Business Objectives
 
-- **Réduction des faux négatifs** : Minimiser le risque de ne pas détecter un incident réel (critique dans le domaine médical)
-- **Optimisation du seuil de classification** : Adaptation dynamique selon le contexte (type de transport, horaires, jours fériés, etc.)
-- **Automatisation** : Détection en temps réel des incidents pour améliorer la réactivité opérationnelle
+- **False negative reduction** : Minimize the risk of missing a real incident (critical in the medical field)
+- **Classification threshold optimization** : Dynamic adaptation based on context (transport type, schedules, holidays, etc.)
+- **Automation** : Real-time incident detection to improve operational responsiveness
 
-### 📊 Résultats Clés
+### 📊 Key Results
 
-| Métrique | Seuil Standard (0.5) | Seuil Optimal (0.90) | Amélioration |
-|----------|----------------------|---------------------|--------------|
-| **Accuracy Globale** | ≈ 90% | ≈ 90% | Stable |
-| **F1-Score Global** | 0.91 | 0.91 | Stable |
-| **F1-Score Incidents** | 0.73 | Amélioré | + |
-| **Recall (Incident)** | Faible | **Beaucoup plus élevé** | **+++** |
-| **Faux Négatifs** | Nombreux | **Réduits significativement** | **Réduction majeure** |
+| Metric | Standard Threshold (0.5) | Optimal Threshold (0.90) | Improvement |
+|--------|-------------------------|-------------------------|-------------|
+| **Global Accuracy** | ≈ 90% | ≈ 90% | Stable |
+| **Global F1-Score** | 0.91 | 0.91 | Stable |
+| **Incident F1-Score** | 0.73 | Improved | + |
+| **Recall (Incident)** | Low | **Much higher** | **+++** |
+| **False Negatives** | Many | **Significantly reduced** | **Major reduction** |
 
-> **Note** : Le choix métier privilégie le recall élevé pour les incidents, acceptant une augmentation des faux positifs afin de garantir qu'aucun incident réel ne soit manqué.
+> **Note** : Business choice prioritizes high recall for incidents, accepting an increase in false positives to ensure no real incident is missed.
 
 ---
 
-## 🏗️ Architecture du Projet
+## 🏗️ Project Architecture
 
 ```
 Model paramedic/
 │
-├── README.md                 # Ce fichier
-├── ARCHITECTURE.md           # Architecture technique
-├── docs/                     # Documentation détaillée
-│   ├── METHODOLOGY.md        # Méthodologie complète
-│   ├── THRESHOLD_OPTIMIZATION.md  # Optimisation du seuil
-│   └── RESULTS.md            # Résultats détaillés
+├── README.md                 # This file
+├── ARCHITECTURE.md           # Technical architecture
+├── docs/                     # Detailed documentation
+│   ├── METHODOLOGY.md        # Complete methodology
+│   ├── THRESHOLD_OPTIMIZATION.md  # Threshold optimization
+│   └── RESULTS.md            # Detailed results
 │
-├── notebooks/                # Notebooks d'expérimentation
-│   ├── train_model.ipynb     # Entraînement du modèle CamemBERT
-│   └── test_seuil_perso3.ipynb  # Tests du seuil personnalisé
+├── notebooks/                # Experimentation notebooks
+│   ├── train_model.ipynb     # CamemBERT model training
+│   └── test_seuil_perso3.ipynb  # Custom threshold tests
 │
-├── assets/                   # Images et visualisations
+├── assets/                   # Images and visualizations
 │   ├── training_results.png
 │   ├── confusion_matrix_standard.png
 │   └── confusion_matrix_custom_threshold.png
@@ -60,16 +60,16 @@ Model paramedic/
 
 ---
 
-## 🔬 Méthodologie
+## 🔬 Methodology
 
-### 1. Modèle de Base : CamemBERT
+### 1. Base Model: CamemBERT
 
-- **Modèle** : `camembert-base` (Hugging Face)
-- **Architecture** : Transformer BERT adapté au français
-- **Tâche** : Classification binaire (incident / non_incident)
-- **Fine-tuning** : 2 epochs avec learning rate 2e-5
+- **Model** : `camembert-base` (Hugging Face)
+- **Architecture** : Transformer BERT adapted for French
+- **Task** : Binary classification (incident / non_incident)
+- **Fine-tuning** : 2 epochs with learning rate 2e-5
 
-#### Hyperparamètres d'Entraînement
+#### Training Hyperparameters
 
 ```python
 TrainingArguments(
@@ -86,175 +86,159 @@ TrainingArguments(
 
 #### Dataset
 
-- **Train** : 8,123 exemples
-- **Test** : 2,031 exemples
-- **Format** : JSONL avec champs `text` et `label`
+- **Train** : 8,123 examples
+- **Test** : 2,031 examples
+- **Format** : JSONL with `text` and `label` fields
 - **Labels** : `non_incident` (0) / `incident` (1)
 
-### 2. Innovation : Optimisation du Seuil de Classification
+### 2. Innovation: Classification Threshold Optimization
 
-Le seuil standard (0.5) produisait trop de faux négatifs. Après analyse des courbes précision-rappel-F1, un **seuil optimal de 0.90** a été identifié, permettant de maximiser le rappel (détection des incidents) tout en maintenant une précision acceptable.
+The standard threshold (0.5) produced too many false negatives. After analyzing precision-recall-F1 curves, an **optimal threshold of 0.90** was identified, maximizing recall (incident detection) while maintaining acceptable precision.
 
-#### Approche 1 : Seuil Fixe Optimal
+#### Approach 1: Optimal Fixed Threshold
 
-- **Seuil standard** : 0.5 → Trop de faux négatifs
-- **Seuil optimal** : 0.90 → Rappel beaucoup plus élevé, faux négatifs réduits significativement
+- **Standard threshold** : 0.5 → Too many false negatives
+- **Optimal threshold** : 0.90 → Much higher recall, significantly reduced false negatives
 
-#### Approche 2 : Personnalisation Dynamique (Expérimentée)
+#### Approach 2: Dynamic Personalization (Experimentation)
 
-Une personnalisation dynamique du seuil a également été expérimentée, en fonction de paramètres de risque identifiés :
-- Type de trajet
-- Contexte week-end/jour férié
-- Timing des messages
+A dynamic threshold personalization was also experimented, based on identified risk parameters:
+- Trip type
+- Weekend/holiday context
+- Message timing
 
-Cette approche a permis de réduire fortement les faux négatifs, tout en gardant les faux positifs sous contrôle.
+This approach allowed for strong reduction of false negatives while keeping false positives under control.
 
 ---
 
-## 📈 Résultats Détaillés
+## 📈 Detailed Results
 
-### Performance avec Seuil Standard (0.5)
+### Performance with Standard Threshold (0.5)
 
 - **Accuracy** : ≈ 90%
-- **F1-Score Global** : 0.91
-- **F1-Score Incidents** : 0.73
-- **Problème** : **124 faux négatifs** (incidents réels non détectés) ⚠️
+- **Global F1-Score** : 0.91
+- **Incident F1-Score** : 0.73
+- **Problem** : **124 false negatives** (real incidents not detected) ⚠️
 
-![Matrice de confusion - Seuil standard](assets/confusion_matrix_standard.png)
+![Confusion matrix - Standard threshold](assets/confusion_matrix_standard.png)
 
-### Performance avec Seuil Personnalisé
+### Performance with Custom Threshold
 
-- **Accuracy** : ≈ 90% (maintenue)
-- **Rappel (Recall)** : 0.95 (vs 0.67 avec seuil standard)
-- **Faux négatifs** : **1 seul** (vs 124 avec seuil standard) ✅
-- **Compromis** : Rappel élevé (peu d'incidents oubliés) avec précision plus faible (plus de faux positifs)
+- **Accuracy** : ≈ 90% (maintained)
+- **Recall** : 0.95 (vs 0.67 with standard threshold)
+- **False negatives** : **Only 1** (vs 124 with standard threshold) ✅
+- **Trade-off** : High recall (few missed incidents) with lower precision (more false positives)
 
-![Matrice de confusion - Seuil personnalisé](assets/confusion_matrix_custom_threshold.png)
+![Confusion matrix - Custom threshold](assets/confusion_matrix_custom_threshold.png)
 
-### Analyse
+### Analysis
 
-- ✅ **Rappel incident** : Amélioration significative
-- ✅ **Faux négatifs** : Réduction majeure
-- ⚠️ **Précision incident** : Plus faible (trade-off accepté pour maximiser la détection)
-- ✅ **Accuracy globale** : Maintenue à ≈ 90%
-
----
-
-## 💡 Choix Techniques et Justifications
-
-### Pourquoi CamemBERT ?
-
-- **Spécialisé français** : Entraîné sur un large corpus français
-- **Performance** : État de l'art pour les tâches NLP en français
-- **Intégration** : Facilement intégrable via Hugging Face Transformers
-
-### Pourquoi un Seuil Personnalisé ?
-
-Dans le contexte médical, **un faux négatif (incident non détecté) est bien plus critique qu'un faux positif**. Le seuil personnalisé permet de :
-
-1. **Réduire drastiquement les faux négatifs** : De ~124 à ~1
-2. **S'adapter au contexte** : Prise en compte des facteurs de risque métier
-3. **Maintenir l'accuracy globale** : Impact minimal sur la performance globale
-
-### Trade-off Precision/Recall
-
-Le choix métier privilégie le **recall élevé** pour les incidents :
-- **Seuil 0.5** : Nombreux faux négatifs (incidents non détectés)
-- **Seuil 0.90** : Rappel beaucoup plus élevé, faux négatifs réduits significativement
-
-Cette approche garantit qu'aucun incident critique ne passe inaperçu, même si cela génère plus d'alertes à vérifier manuellement (faux positifs acceptables).
+- ✅ **Incident recall** : Significant improvement
+- ✅ **False negatives** : Major reduction
+- ⚠️ **Incident precision** : Lower (trade-off accepted to maximize detection)
+- ✅ **Global accuracy** : Maintained at ≈ 90%
 
 ---
 
-## 🛠️ Technologies Utilisées
+## 💡 Technical Choices and Justifications
+
+### Why CamemBERT?
+
+- **French specialized** : Trained on a large French corpus
+- **Performance** : State-of-the-art for NLP tasks in French
+- **Integration** : Easily integrable via Hugging Face Transformers
+
+### Why a Custom Threshold?
+
+In the medical context, **a false negative (undetected incident) is much more critical than a false positive**. The custom threshold allows to:
+
+1. **Drastically reduce false negatives** : From ~124 to ~1
+2. **Adapt to context** : Consider business risk factors
+3. **Maintain global accuracy** : Minimal impact on overall performance
+
+### Precision/Recall Trade-off
+
+Business choice prioritizes **high recall** for incidents:
+- **Threshold 0.5** : Many false negatives (undetected incidents)
+- **Threshold 0.90** : Much higher recall, significantly reduced false negatives
+
+This approach ensures no critical incident goes unnoticed, even if it generates more alerts to manually verify (acceptable false positives).
+
+---
+
+## 🛠️ Technologies Used
 
 - **Python** 3.8+
-- **Transformers** (Hugging Face) : Modèles pré-entraînés
-- **Datasets** (Hugging Face) : Gestion des données
-- **scikit-learn** : Métriques et évaluation
-- **PyTorch** : Backend de calcul
-- **matplotlib/seaborn** : Visualisations
+- **Transformers** (Hugging Face) : Pre-trained models
+- **Datasets** (Hugging Face) : Data management
+- **scikit-learn** : Metrics and evaluation
+- **PyTorch** : Computing backend
+- **matplotlib/seaborn** : Visualizations
 
 ---
 
-## 📚 Documentation Complète
+## 📚 Complete Documentation
 
-Pour plus de détails, consultez :
+For more details, see:
 
-- **[Méthodologie détaillée](docs/METHODOLOGY.md)** : Pipeline complet, préprocessing, entraînement
-- **[Optimisation du seuil](docs/THRESHOLD_OPTIMIZATION.md)** : Algorithme, facteurs de risque, exemples
-- **[Résultats](docs/RESULTS.md)** : Métriques détaillées, matrices de confusion, analyses
+- **[Detailed Methodology](docs/METHODOLOGY.md)** : Complete pipeline, preprocessing, training
+- **[Threshold Optimization](docs/THRESHOLD_OPTIMIZATION.md)** : Algorithm, risk factors, examples
+- **[Results](docs/RESULTS.md)** : Detailed metrics, confusion matrices, analyses
 
 ---
 
-## 🎓 Compétences Développées
+## 🎓 Skills Demonstrated
 
-Ce projet démontre :
+This project demonstrates:
 
-- ✅ **NLP avancé** : Fine-tuning de modèles transformer (CamemBERT)
-- ✅ **Classification binaire** : Optimisation pour cas d'usage métier
-- ✅ **Ingénierie des features** : Intégration de features métier (contexte temporel, type de transport)
-- ✅ **Optimisation métier** : Trade-off precision/recall adapté au domaine
-- ✅ **Évaluation** : Métriques adaptées au contexte (focus sur recall)
+- ✅ **Advanced NLP** : Fine-tuning transformer models (CamemBERT)
+- ✅ **Binary classification** : Optimization for business use cases
+- ✅ **Feature engineering** : Integration of business features (temporal context, transport type)
+- ✅ **Business optimization** : Precision/recall trade-off adapted to the domain
+- ✅ **Evaluation** : Context-adapted metrics (focus on recall)
 - ✅ **Python/ML** : Transformers, scikit-learn, PyTorch
 
 ---
 
-## 📝 Notes Importantes
+## 📝 Important Notes
 
-- ⚠️ **Aucune donnée confidentielle** : Les exemples présentés sont fictifs
-- ⚠️ **Projet portfolio** : Ce dépôt est une vitrine technique, non exécutable
-- ⚠️ **Source de vérité** : Les résultats et méthodologie sont basés sur le rapport de stage (source canonique)
-- ⚠️ **Données confidentielles** : Aucune donnée réelle de l'entreprise n'est présente dans ce dépôt
-- 📚 **Documentation complète** : Voir le dossier `docs/` pour les détails techniques
+- ⚠️ **No confidential data** : Examples presented are fictional
+- ⚠️ **Portfolio project** : This repository is a technical showcase, not executable
+- ⚠️ **Source of truth** : Results and methodology are based on the internship report (canonical source)
+- ⚠️ **Confidential data** : No real company data is present in this repository
+- 📚 **Complete documentation** : See the `docs/` folder for technical details
 
-## 🚀 Installation (Pour référence uniquement)
+## 🚀 Installation (Reference Only)
 
-Ce projet est présenté à des fins de démonstration. Pour reproduire l'environnement :
+This project is presented for demonstration purposes. To reproduce the environment:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-**Note** : Les notebooks nécessitent un accès GPU (Google Colab recommandé) pour l'entraînement.
+**Note** : Notebooks require GPU access (Google Colab recommended) for training.
 
 ---
 
-## 👤 Auteur
+## 👤 Author
 
 **Mohamed Ben Amor**  
-Stage Année 1 - Projet de Classification NLP
+Year 1 Internship - NLP Classification Project
 
 ---
 
-## 📄 Licence
+## 📄 License
 
-Ce projet est présenté à des fins de démonstration et de portfolio.
-
----
-
-## 🔗 Références
-
-- [CamemBERT](https://huggingface.co/camembert-base) - Modèle de langue français
-- [Hugging Face Transformers](https://huggingface.co/docs/transformers) - Bibliothèque NLP
-- [scikit-learn](https://scikit-learn.org/) - Machine Learning en Python
+This project is presented for demonstration and portfolio purposes.
 
 ---
 
-## 📌 Topics GitHub Recommandés
+## 🔗 References
 
-Pour améliorer la découvrabilité sur GitHub, ajoutez ces topics :
-- `nlp`
-- `camembert`
-- `transformers`
-- `classification`
-- `french-nlp`
-- `machine-learning`
-- `deep-learning`
-- `huggingface`
-- `portfolio`
-- `medical-ai`
+- [CamemBERT](https://huggingface.co/camembert-base) - French language model
+- [Hugging Face Transformers](https://huggingface.co/docs/transformers) - NLP library
+- [scikit-learn](https://scikit-learn.org/) - Machine Learning in Python
 
 ---
 
-*Dernière mise à jour : Janvier 2026*
+*Last updated: January 2026*

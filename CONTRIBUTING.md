@@ -1,33 +1,33 @@
 # Contributing
 
-Ce projet est un **projet portfolio/vitrine** présenté à des fins de démonstration.
+This project is a **portfolio/showcase project** presented for demonstration purposes.
 
-## 📋 Statut du Projet
+## 📋 Project Status
 
-Ce dépôt GitHub présente le travail réalisé lors d'un stage, avec :
-- Documentation complète de la méthodologie
-- Résultats et analyses détaillés
-- Notebooks d'expérimentation (illustration uniquement)
+This GitHub repository presents work completed during an internship, with:
+- Complete methodology documentation
+- Detailed results and analyses
+- Experimentation notebooks (illustration only)
 
 ## ⚠️ Limitations
 
-- **Non exécutable** : Ce projet n'est pas conçu pour être exécuté directement
-- **Données** : Aucune donnée réelle n'est incluse (confidentialité)
-- **Modèles** : Les modèles entraînés ne sont pas inclus (taille)
+- **Not executable** : This project is not designed to be executed directly
+- **Data** : No real data is included (confidentiality)
+- **Models** : Trained models are not included (size)
 
-## 📝 Utilisation
+## 📝 Usage
 
-Ce projet peut servir de :
-- **Référence** pour des projets similaires de classification NLP
-- **Exemple** d'optimisation de seuil de classification
-- **Documentation** de méthodologie NLP avec CamemBERT
+This project can serve as:
+- **Reference** for similar NLP classification projects
+- **Example** of classification threshold optimization
+- **Documentation** of NLP methodology with CamemBERT
 
-## 🔒 Confidentialité
+## 🔒 Confidentiality
 
-- Aucune donnée confidentielle n'est présente
-- Les exemples sont fictifs
-- Le rapport de stage n'est pas inclus (confidentiel)
+- No confidential data is present
+- Examples are fictional
+- The internship report is not included (confidential)
 
 ---
 
-*Ce projet est présenté à des fins de démonstration et de portfolio.*
+*This project is presented for demonstration and portfolio purposes.*
