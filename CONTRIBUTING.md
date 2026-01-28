@@ -2,27 +2,27 @@
 
 This project is a **portfolio/showcase project** presented for demonstration purposes.
 
-## 📋 Project Status
+## Project Status
 
 This GitHub repository presents work completed during an internship, with:
 - Complete methodology documentation
 - Detailed results and analyses
 - Experimentation notebooks (illustration only)
 
-## ⚠️ Limitations
+## Limitations
 
 - **Not executable** : This project is not designed to be executed directly
 - **Data** : No real data is included (confidentiality)
 - **Models** : Trained models are not included (size)
 
-## 📝 Usage
+## Usage
 
 This project can serve as:
 - **Reference** for similar NLP classification projects
 - **Example** of classification threshold optimization
 - **Documentation** of NLP methodology with CamemBERT
 
-## 🔒 Confidentiality
+## Confidentiality
 
 - No confidential data is present
 - Examples are fictional

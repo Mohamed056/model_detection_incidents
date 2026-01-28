@@ -1,4 +1,4 @@
-# 🚑 Incident Detection in Medical Transport Communications
+# Incident Detection in Medical Transport Communications
 
 > NLP classification project using CamemBERT to automatically identify incidents in communication exchanges between medical transporters and operators.
 
@@ -8,19 +8,19 @@
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/Status-Portfolio-yellow.svg)](https://github.com)
 
-**🎯 Key Result** : False negatives reduced from **124 to 1** (-99%) through classification threshold optimization.
+**Key Result** : False negatives reduced from **124 to 1** (-99%) through classification threshold optimization.
 
-## 📋 Executive Summary
+## Executive Summary
 
 This project presents a binary classification system using the French language model **CamemBERT** to automatically detect incidents in medical transport communications. The main innovation lies in implementing a **personalized and dynamic classification threshold** that adapts to business contexts, significantly reducing false negatives while maintaining high accuracy.
 
-### 🎯 Business Objectives
+### Business Objectives
 
 - **False negative reduction** : Minimize the risk of missing a real incident (critical in the medical field)
 - **Classification threshold optimization** : Dynamic adaptation based on context (transport type, schedules, holidays, etc.)
 - **Automation** : Real-time incident detection to improve operational responsiveness
 
-### 📊 Key Results
+### Key Results
 
 | Metric | Standard Threshold (0.5) | Optimal Threshold (0.90) | Improvement |
 |--------|-------------------------|-------------------------|-------------|
@@ -34,7 +34,7 @@ This project presents a binary classification system using the French language m
 
 ---
 
-## 🏗️ Project Architecture
+## Project Architecture
 
 ```
 Model paramedic/
@@ -60,7 +60,7 @@ Model paramedic/
 
 ---
 
-## 🔬 Methodology
+## Methodology
 
 ### 1. Base Model: CamemBERT
 
@@ -111,14 +111,14 @@ This approach allowed for strong reduction of false negatives while keeping fals
 
 ---
 
-## 📈 Detailed Results
+## Detailed Results
 
 ### Performance with Standard Threshold (0.5)
 
 - **Accuracy** : ≈ 90%
 - **Global F1-Score** : 0.91
 - **Incident F1-Score** : 0.73
-- **Problem** : **124 false negatives** (real incidents not detected) ⚠️
+- **Problem** : **124 false negatives** (real incidents not detected)
 
 ![Confusion matrix - Standard threshold](assets/confusion_matrix_standard.png)
 
@@ -126,21 +126,21 @@ This approach allowed for strong reduction of false negatives while keeping fals
 
 - **Accuracy** : ≈ 90% (maintained)
 - **Recall** : 0.95 (vs 0.67 with standard threshold)
-- **False negatives** : **Only 1** (vs 124 with standard threshold) ✅
+- **False negatives** : **Only 1** (vs 124 with standard threshold)
 - **Trade-off** : High recall (few missed incidents) with lower precision (more false positives)
 
 ![Confusion matrix - Custom threshold](assets/confusion_matrix_custom_threshold.png)
 
 ### Analysis
 
-- ✅ **Incident recall** : Significant improvement
-- ✅ **False negatives** : Major reduction
-- ⚠️ **Incident precision** : Lower (trade-off accepted to maximize detection)
-- ✅ **Global accuracy** : Maintained at ≈ 90%
+- **Incident recall** : Significant improvement
+- **False negatives** : Major reduction
+- **Incident precision** : Lower (trade-off accepted to maximize detection)
+- **Global accuracy** : Maintained at ≈ 90%
 
 ---
 
-## 💡 Technical Choices and Justifications
+## Technical Choices and Justifications
 
 ### Why CamemBERT?
 
@@ -166,7 +166,7 @@ This approach ensures no critical incident goes unnoticed, even if it generates 
 
 ---
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 - **Python** 3.8+
 - **Transformers** (Hugging Face) : Pre-trained models
@@ -177,7 +177,7 @@ This approach ensures no critical incident goes unnoticed, even if it generates 
 
 ---
 
-## 📚 Complete Documentation
+## Complete Documentation
 
 For more details, see:
 
@@ -187,28 +187,28 @@ For more details, see:
 
 ---
 
-## 🎓 Skills Demonstrated
+## Skills Demonstrated
 
 This project demonstrates:
 
-- ✅ **Advanced NLP** : Fine-tuning transformer models (CamemBERT)
-- ✅ **Binary classification** : Optimization for business use cases
-- ✅ **Feature engineering** : Integration of business features (temporal context, transport type)
-- ✅ **Business optimization** : Precision/recall trade-off adapted to the domain
-- ✅ **Evaluation** : Context-adapted metrics (focus on recall)
-- ✅ **Python/ML** : Transformers, scikit-learn, PyTorch
+- **Advanced NLP** : Fine-tuning transformer models (CamemBERT)
+- **Binary classification** : Optimization for business use cases
+- **Feature engineering** : Integration of business features (temporal context, transport type)
+- **Business optimization** : Precision/recall trade-off adapted to the domain
+- **Evaluation** : Context-adapted metrics (focus on recall)
+- **Python/ML** : Transformers, scikit-learn, PyTorch
 
 ---
 
-## 📝 Important Notes
+## Important Notes
 
-- ⚠️ **No confidential data** : Examples presented are fictional
-- ⚠️ **Portfolio project** : This repository is a technical showcase, not executable
-- ⚠️ **Source of truth** : Results and methodology are based on the internship report (canonical source)
-- ⚠️ **Confidential data** : No real company data is present in this repository
-- 📚 **Complete documentation** : See the `docs/` folder for technical details
+- **No confidential data** : Examples presented are fictional
+- **Portfolio project** : This repository is a technical showcase, not executable
+- **Source of truth** : Results and methodology are based on the internship report (canonical source)
+- **Confidential data** : No real company data is present in this repository
+- **Complete documentation** : See the `docs/` folder for technical details
 
-## 🚀 Installation (Reference Only)
+## Installation (Reference Only)
 
 This project is presented for demonstration purposes. To reproduce the environment:
 
@@ -220,20 +220,20 @@ pip install -r requirements.txt
 
 ---
 
-## 👤 Author
+## Author
 
 **Mohamed Ben Amor**  
 Year 1 Internship - NLP Classification Project
 
 ---
 
-## 📄 License
+## License
 
 This project is presented for demonstration and portfolio purposes.
 
 ---
 
-## 🔗 References
+## References
 
 - [CamemBERT](https://huggingface.co/camembert-base) - French language model
 - [Hugging Face Transformers](https://huggingface.co/docs/transformers) - NLP library

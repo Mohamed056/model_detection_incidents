@@ -1,4 +1,4 @@
-# 📖 Detailed Methodology
+# Detailed Methodology
 
 This document presents the complete methodology of the incident detection project in medical transport communications.
 
@@ -163,10 +163,10 @@ def compute_metrics(eval_pred):
 - **Incident F1-Score** : 0.73
 
 **Analysis** :
-- ✅ **Global accuracy** : ≈ 90% (excellent)
-- ✅ **Global F1-Score** : 0.91 (very good)
-- ⚠️ **Incident F1-Score** : 0.73 (acceptable but improvable)
-- ⚠️ **False negatives** : The confusion matrix showed the model still produced false negatives (real incidents not detected)
+- **Global accuracy** : ≈ 90% (excellent)
+- **Global F1-Score** : 0.91 (very good)
+- **Incident F1-Score** : 0.73 (acceptable but improvable)
+- **False negatives** : The confusion matrix showed the model still produced false negatives (real incidents not detected)
 
 ---
 
@@ -222,9 +222,9 @@ In this business context, **recall is more important than precision** :
 ### 4.3 Business Validation
 
 The custom threshold was validated with business experts for:
-- ✅ Drastically reducing false negatives
-- ✅ Maintaining acceptable global accuracy
-- ✅ Adapting the system to operational constraints
+- Drastically reducing false negatives
+- Maintaining acceptable global accuracy
+- Adapting the system to operational constraints
 
 ---
 

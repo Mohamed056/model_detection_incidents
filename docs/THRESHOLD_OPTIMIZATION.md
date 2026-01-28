@@ -1,4 +1,4 @@
-# 🎯 Classification Threshold Optimization
+# Classification Threshold Optimization
 
 This document details the classification threshold optimization, with two approaches: **an optimal fixed threshold (0.90)** and **an experimented dynamic personalization** that adapts to the business context.
 
@@ -22,15 +22,15 @@ With a fixed classification threshold of 0.5, the model shows the following perf
 ### 1.2 Business Impact
 
 A false negative means:
-- ❌ A real incident is not detected
-- ❌ No alert generated
-- ❌ Risk of non-intervention
-- ❌ Potential serious consequences
+- A real incident is not detected
+- No alert generated
+- Risk of non-intervention
+- Potential serious consequences
 
 A false positive means:
-- ⚠️ An alert is generated for a non-incident
-- ✅ Manual verification (acceptable)
-- ✅ No critical risk
+- An alert is generated for a non-incident
+- Manual verification (acceptable)
+- No critical risk
 
 **Conclusion** : In this context, **recall is more important than precision**.
 
@@ -236,15 +236,15 @@ non_incident       1.00      0.89      0.94       584
 
 | Metric | Standard Threshold | Custom Threshold | Evolution |
 |--------|-------------------|------------------|-----------|
-| **Incident Recall** | 0.67 | **0.95** | **+42%** ✅ |
-| **Incident Precision** | 0.81 | 0.25 | -69% ⚠️ |
-| **Incident F1-Score** | 0.73 | 0.40 | -45% ⚠️ |
-| **Global Accuracy** | 0.91 | 0.90 | -1% ✅ |
-| **False Negatives** | ~124 | **~1** | **-99%** ✅ |
+| **Incident Recall** | 0.67 | **0.95** | **+42%** |
+| **Incident Precision** | 0.81 | 0.25 | -69% |
+| **Incident F1-Score** | 0.73 | 0.40 | -45% |
+| **Global Accuracy** | 0.91 | 0.90 | -1% |
+| **False Negatives** | ~124 | **~1** | **-99%** |
 
 ### 5.3 Analysis
 
-#### ✅ Positive Points
+#### Positive Points
 
 1. **Incident recall** : **0.95** (only 5% of incidents not detected)
    - **Before** : 33% of incidents not detected
@@ -259,7 +259,7 @@ non_incident       1.00      0.89      0.94       584
 3. **Global accuracy** : Maintained at 90%
    - Minimal impact on overall performance
 
-#### ⚠️ Accepted Trade-offs
+#### Accepted Trade-offs
 
 1. **Incident precision** : 0.25 (75% false positives)
    - **Acceptable** : False positives are manually verified
@@ -277,10 +277,10 @@ non_incident       1.00      0.89      0.94       584
 
 The custom threshold was validated with business experts according to:
 
-1. ✅ **False negative reduction** : Objective achieved (-99%)
-2. ✅ **High recall** : 95% (objective > 90%)
-3. ✅ **Global accuracy** : Maintained at 90%
-4. ✅ **False positive acceptability** : Manual verification acceptable
+1. **False negative reduction** : Objective achieved (-99%)
+2. **High recall** : 95% (objective > 90%)
+3. **Global accuracy** : Maintained at 90%
+4. **False positive acceptability** : Manual verification acceptable
 
 ### 6.2 Operational Impact
 
@@ -336,9 +336,9 @@ Integrate other risk factors:
 
 Threshold optimization represents the main innovation of this project. By adapting the threshold to the business context, we succeeded in:
 
-- ✅ **Drastically reducing false negatives** (-99%)
-- ✅ **Improving recall** from 67% to 95% (+42%)
-- ✅ **Maintaining global accuracy** at 90%
+- **Drastically reducing false negatives** (-99%)
+- **Improving recall** from 67% to 95% (+42%)
+- **Maintaining global accuracy** at 90%
 
 This approach demonstrates the importance of **understanding the business context** and adapting technical solutions to real constraints, rather than using standard metrics without considering the application domain.
 

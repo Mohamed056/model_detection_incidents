@@ -1,4 +1,4 @@
-# 📊 Detailed Results
+# Detailed Results
 
 This document presents the complete results of the incident detection project, with an in-depth analysis of performance and metrics.
 
@@ -14,9 +14,9 @@ This document presents the complete results of the incident detection project, w
 | **2** | 0.276         | 0.260           | **0.909**| **0.906**           |
 
 **Analysis** :
-- ✅ **Rapid convergence** : Improvement from the first epoch
-- ✅ **No overfitting** : Validation loss continues to decrease
-- ✅ **Best model** : Epoch 2 selected (accuracy 0.909)
+- **Rapid convergence** : Improvement from the first epoch
+- **No overfitting** : Validation loss continues to decrease
+- **Best model** : Epoch 2 selected (accuracy 0.909)
 
 ### 1.2 Training Results
 
@@ -29,9 +29,9 @@ This document presents the complete results of the incident detection project, w
 - **Training samples/second** : 0.791
 
 **Analysis** :
-- ✅ **Rapid convergence** : Improvement from the first epoch
-- ✅ **No overfitting** : Validation loss continues to decrease
-- ✅ **Best model** : Epoch 2 selected (accuracy 0.909)
+- **Rapid convergence** : Improvement from the first epoch
+- **No overfitting** : Validation loss continues to decrease
+- **Best model** : Epoch 2 selected (accuracy 0.909)
 - **Training loss** : Regular decrease (0.396 → 0.276)
 - **Validation loss** : Parallel decrease (0.281 → 0.260)
 
@@ -71,7 +71,7 @@ weighted avg       0.91      0.91      0.91      2031
 
 **Detailed analysis** :
 - **True positives** : 252 incidents correctly detected
-- **False negatives** : **124 incidents not detected** ⚠️ (critical problem)
+- **False negatives** : **124 incidents not detected** (critical problem)
 - **False positives** : 61 non-incidents classified as incidents
 - **True negatives** : 1594 non-incidents correctly classified
 
@@ -124,7 +124,7 @@ weighted avg       0.97      0.90      0.92       606
 
 **Confusion matrix analysis** :
 - **True positives** : 21 incidents correctly detected
-- **False negatives** : **1 incident not detected** ✅ (vs 124 with standard threshold)
+- **False negatives** : **1 incident not detected** (vs 124 with standard threshold)
 - **False positives** : 62 non-incidents classified as incidents
 - **True negatives** : 522 non-incidents correctly classified
 
@@ -138,17 +138,17 @@ weighted avg       0.97      0.90      0.92       606
 
 | Metric | Standard Threshold (0.5) | Optimal Threshold (0.90) | Impact |
 |--------|-------------------------|-------------------------|--------|
-| **Global Accuracy** | ≈ 90% | ≈ 90% | ✅ Stable |
-| **Global F1-Score** | 0.91 | 0.91 | ✅ Stable |
-| **Incident F1-Score** | 0.73 | Improved | ✅ Improvement |
-| **Recall** | Low | **Much higher** | ✅ **Critical** |
-| **False Negatives** | Many | **Significantly reduced** | ✅ **Critical** |
-| **Precision** | Acceptable | Lower | ⚠️ Accepted trade-off |
-| **False Positives** | Acceptable | More numerous | ⚠️ Acceptable (manual verification)
+| **Global Accuracy** | ≈ 90% | ≈ 90% | Stable |
+| **Global F1-Score** | 0.91 | 0.91 | Stable |
+| **Incident F1-Score** | 0.73 | Improved | Improvement |
+| **Recall** | Low | **Much higher** | **Critical** |
+| **False Negatives** | Many | **Significantly reduced** | **Critical** |
+| **Precision** | Acceptable | Lower | Accepted trade-off |
+| **False Positives** | Acceptable | More numerous | Acceptable (manual verification)
 
 ### 4.2 Improvement Analysis
 
-#### ✅ Major Improvements
+#### Major Improvements
 
 1. **Incident Recall** : **Significant improvement**
    - **Before (threshold 0.5)** : Many incidents not detected
@@ -165,7 +165,7 @@ weighted avg       0.97      0.90      0.92       606
    - **After** : Improved
    - **Impact** : Better overall performance for incident detection
 
-#### ⚠️ Accepted Trade-offs
+#### Accepted Trade-offs
 
 1. **Incident Precision** : **Lower**
    - **Justification** : False positives are manually verified (acceptable)
@@ -176,7 +176,7 @@ weighted avg       0.97      0.90      0.92       606
    - **Acceptable** : Manual verification without serious consequences
    - **Justification** : Better to verify a false positive than miss a real incident
 
-#### ✅ Stability
+#### Stability
 
 1. **Global Accuracy** : **Maintained at ≈ 90%**
    - **Impact** : Stable overall performance
@@ -289,9 +289,9 @@ With the custom threshold:
 
 Results demonstrate the effectiveness of the custom threshold:
 
-- ✅ **Incident recall** : +42% (0.67 → 0.95)
-- ✅ **False negatives** : -99% (~124 → ~1)
-- ✅ **Global accuracy** : Maintained at 90%
+- **Incident recall** : +42% (0.67 → 0.95)
+- **False negatives** : -99% (~124 → ~1)
+- **Global accuracy** : Maintained at 90%
 
 This approach illustrates the importance of **adapting technical solutions to business context** rather than using standard metrics without considering the application domain.
 

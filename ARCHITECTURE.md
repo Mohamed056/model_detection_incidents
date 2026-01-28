@@ -1,4 +1,4 @@
-# 🏗️ Project Architecture
+# Project Architecture
 
 This document presents the technical architecture and structure of the incident detection project.
 
@@ -264,9 +264,9 @@ Final prediction
 
 ### 8.1 Sensitive Data
 
-- ⚠️ **No confidential data** : Examples presented are fictional
-- ⚠️ **Anonymization** : No real company or client names
-- ⚠️ **Compliance** : Respect of regulations (GDPR, etc.)
+- **No confidential data** : Examples presented are fictional
+- **Anonymization** : No real company or client names
+- **Compliance** : Respect of regulations (GDPR, etc.)
 
 ### 8.2 Best Practices
 
